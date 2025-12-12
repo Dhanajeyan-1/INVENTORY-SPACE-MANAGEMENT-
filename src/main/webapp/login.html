@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Inventory Management System</title>
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Login Page Specific Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg-body) 0%, #e2e8f0 100%);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Animated Background Bubbles */
+        .background-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(50px);
+            opacity: 0.6;
+            animation: float 20s infinite;
+        }
+
+        .shape-1 {
+            top: -10%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: var(--primary-soft);
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: var(--secondary-soft);
+            animation-delay: -5s;
+        }
+
+        .shape-3 {
+            top: 30%;
+            left: 40%;
+            width: 300px;
+            height: 300px;
+            background: rgba(96, 165, 250, 0.1);
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+            animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            padding: 40px 40px 20px;
+        }
+
+        .login-logo {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 10px 25px var(--primary-soft);
+        }
+
+        .login-title {
+            margin: 0 0 8px;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .login-subtitle {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .login-body {
+            padding: 20px 40px 40px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 24px;
+            padding: 4px;
+            background: var(--bg-body);
+            border-radius: 12px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            background: none;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .form-control {
+            padding-left: 48px;
+            background: white;
+        }
+
+        .form-control:focus+.input-icon {
+            color: var(--primary);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 4px;
+            transition: color 0.3s;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px var(--primary-soft);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px var(--primary-soft);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .demo-credentials {
+            margin-top: 24px;
+            padding: 16px;
+            background: rgba(243, 244, 246, 0.6);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .demo-credentials strong {
+            color: var(--primary-dark);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .demo-credentials p {
+            margin: 4px 0;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">📦</div>
+                <h1 class="login-title">Inventory System</h1>
+                <p class="login-subtitle">Secure access to your dashboard</p>
+            </div>
+
+            <div class="login-body">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
+                    <button class="auth-tab" onclick="switchTab('signup')">Create Account</button>
+                </div>
+
+                <div id="alert-container"></div>
+
+                <!-- Login Form -->
+                <form id="loginForm">
+                    <div class="input-group">
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Username"
+                            required autocomplete="username">
+                        <span class="input-icon">👤</span>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                            required autocomplete="current-password">
+                        <span class="input-icon">🔒</span>
+                        <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+                    </div>
+
+                    <button type="submit" class="btn-login" id="loginBtn">
+                        <span id="loginText">Sign In</span>
+                        <span id="loginSpinner" class="spinner" style="display: none;"></span>
+                    </button>
+                </form>
+
+                <!-- Sign Up Form -->
+                <form id="signupForm" style="display: none;">
+                    <div class="input-group">
+                        <input type="text" id="newUsername" class="form-control" placeholder="Choose Username" required>
+                        <span class="input-icon">👤</span>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" id="fullName" class="form-control" placeholder="Full Name" required>
+                        <span class="input-icon">📝</span>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" id="newPassword" class="form-control" placeholder="Create Password"
+                            required>
+                        <span class="input-icon">🔒</span>
+                        <button type="button" class="password-toggle"
+                            onclick="togglePassword('newPassword')">👁️</button>
+                    </div>
+
+                    <button type="submit" class="btn-login" id="signupBtn">
+                        <span id="signupText">Create Account</span>
+                        <span id="signupSpinner" class="spinner" style="display: none;"></span>
+                    </button>
+                </form>
+
+                <div class="demo-credentials" id="demoCreds">
+                    <strong>🔑 Demo Access</strong>
+                    <p><strong>Admin:</strong> admin / admin123</p>
+                    <p><strong>Staff:</strong> staff1 / admin123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleBtn = passwordInput.nextElementSibling; // The button is the next sibling after input in my HTML structure
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.textContent = '👁️';
+            }
+        }
+
+        // Switch Tabs
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const demoCreds = document.getElementById('demoCreds');
+            const tabs = document.querySelectorAll('.auth-tab');
+
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                demoCreds.style.display = 'block';
+                tabs[0].classList.add('active');
+                tabs[1].classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                demoCreds.style.display = 'none';
+                tabs[0].classList.remove('active');
+                tabs[1].classList.add('active');
+            }
+            document.getElementById('alert-container').innerHTML = '';
+        }
+
+        // Show alert message
+        function showAlert(message, type = 'error') {
+            const alertContainer = document.getElementById('alert-container');
+            alertContainer.innerHTML = `
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `;
+            setTimeout(() => { alertContainer.innerHTML = ''; }, 5000);
+        }
+
+        // Handle LOGIN
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const loginBtn = document.getElementById('loginBtn');
+            const loginText = document.getElementById('loginText');
+            const loginSpinner = document.getElementById('loginSpinner');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            loginBtn.disabled = true;
+            loginText.style.display = 'none';
+            loginSpinner.style.display = 'inline-block';
+
+            try {
+                const params = new URLSearchParams();
+                params.append('username', username);
+                params.append('password', password);
+
+                const response = await fetch('login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    const user = {
+                        username: username,
+                        role: data.user ? data.user.role : 'user',
+                        name: data.user ? data.user.fullName : username
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    showAlert('Login successful!', 'success');
+                    setTimeout(() => { window.location.href = data.redirect || 'dashboard.html'; }, 1000);
+                } else {
+                    showAlert(data.message || 'Invalid credentials');
+                    loginBtn.disabled = false;
+                    loginText.style.display = 'inline-block';
+                    loginSpinner.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('Connection error. Is the server running?');
+                loginBtn.disabled = false;
+                loginText.style.display = 'inline-block';
+                loginSpinner.style.display = 'none';
+            }
+        });
+
+        // Handle SIGN UP
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const signupBtn = document.getElementById('signupBtn');
+            const signupText = document.getElementById('signupText');
+            const signupSpinner = document.getElementById('signupSpinner');
+            const username = document.getElementById('newUsername').value;
+            const fullName = document.getElementById('fullName').value;
+            const password = document.getElementById('newPassword').value;
+
+            signupBtn.disabled = true;
+            signupText.style.display = 'none';
+            signupSpinner.style.display = 'inline-block';
+
+            try {
+                const params = new URLSearchParams();
+                params.append('username', username);
+                params.append('password', password);
+                params.append('fullName', fullName);
+                params.append('email', '');
+
+                const response = await fetch('register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showAlert('Account created! Please sign in.', 'success');
+                    setTimeout(() => {
+                        switchTab('login');
+                        document.getElementById('username').value = username;
+                        signupBtn.disabled = false;
+                        signupText.style.display = 'inline-block';
+                        signupSpinner.style.display = 'none';
+                    }, 1500);
+                } else {
+                    showAlert(data.message || 'Registration failed');
+                    signupBtn.disabled = false;
+                    signupText.style.display = 'inline-block';
+                    signupSpinner.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showAlert('Connection error');
+                signupBtn.disabled = false;
+                signupText.style.display = 'inline-block';
+                signupSpinner.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
